@@ -66,7 +66,6 @@ export default {
 
         browser.tabs.query({ active: true, currentWindow: true }).then((tab) => {
             if(tab.length) {
-                console.log(tab)
                 self.handleTabInfo(tab[0])
             }
         });
@@ -114,14 +113,23 @@ export default {
             var updating = browser.tabs.update({url: url});
             updating.then(onUpdated, onError);
         },
+        addToSplittedURL(frameURL, splitPathName) {
+            let splittedPathaname = splitPathName.split("/").filter(function(e) {
+                return e;
+            });
+            
+            for (let i = 0; i < splittedPathaname.length; i++) {
+                frameURL = frameURL + `/${splittedPathaname[i]}`;
+                this.splittedURL.push(frameURL);
+            }
+        },
         handleTabInfo(tabInfo) {
             this.tabInfo = tabInfo
-            console.log(tabInfo)
             this.url = tabInfo.url;
 
             let urlObj = new URL(this.url);
             this.splittedURL.push(urlObj.origin);
-
+            
             if (urlObj.pathname.length === 1) {
                 if (urlObj.hash) {
                     // The has will be at last
@@ -129,15 +137,7 @@ export default {
                     let splitPathName = splitHash[1];
 
                     let frameURL = `${urlObj.origin}/#`;
-
-                    let splittedPathaname = splitPathName.split("/").filter(function(e) {
-                        return e;
-                    });
-                    
-                    for (let i = 0; i < splittedPathaname.length; i++) {
-                        frameURL = frameURL + `/${splittedPathaname[i]}`;
-                        this.splittedURL.push(frameURL);
-                    }
+                    this.addToSplittedURL(frameURL, splitPathName)
 
                     console.log("Has Hash & has no pathname");
                 }
@@ -149,15 +149,7 @@ export default {
                     console.log(splitHash, splitPathName, urlObj.pathname);
 
                     let frameURL = urlObj.origin;
-
-                    let splittedPathaname = urlObj.pathname.split("/").filter(function(e) {
-                        return e;
-                    });
-
-                    for (let i = 0; i < splittedPathaname.length; i++) {
-                        frameURL = frameURL + `/${splittedPathaname[i]}`;
-                        this.splittedURL.push(frameURL);
-                    }
+                    this.addToSplittedURL(frameURL, urlObj.pathname)
 
                     // Since it has pathname and hash
                     frameURL = frameURL + `/${urlObj.hash}`;
@@ -166,14 +158,8 @@ export default {
                     console.log("Has Hash & has to split the pathname");
                 } else {
                     let frameURL = urlObj.origin;
+                    this.addToSplittedURL(frameURL, urlObj.pathname)
 
-                    let splittedPathaname = urlObj.pathname.split("/").filter(function(e) {
-                        return e;
-                    });
-                    for (let i = 0; i < splittedPathaname.length; i++) {
-                        frameURL = frameURL + `/${splittedPathaname[i]}`;
-                        this.splittedURL.push(frameURL);
-                    }
                     console.log("Has no Hash has to split the pathname");
                 }
             }
@@ -202,6 +188,9 @@ export default {
                     width: 32px;
                     background-color: #868686;
                     border-radius: 3px;
+                    background-color: #f0f0f0;
+                    padding: 4px;
+                    border-bottom: 1px solid #E3E3E5;
                 }
             }
 			h4 {
@@ -232,6 +221,12 @@ export default {
                     }
                     a {
                         font-size: 14px;
+                        display: block;
+                        text-overflow: ellipsis;
+                        white-space: normal;
+                        word-break: break-all;
+                        overflow: hidden;
+                        line-height: 20px;
                     }
                     span {
                         font-size: 12px;
