@@ -56,10 +56,38 @@ export default {
         };
     },
     mounted() {
+        var self = this
+        function handleUpdated(tabId, changeInfo, tabInfo) {
+            console.log(tabId, changeInfo)
+            self.splittedURL = []
+            self.handleTabInfo(tabInfo)
+        }
+        browser.tabs.onUpdated.addListener(handleUpdated);
+
         browser.tabs.query({ active: true, currentWindow: true }).then((tab) => {
-            this.tabInfo = tab[0]
-            console.log(tab[0])
-            this.url = tab[0].url;
+            if(tab.length) {
+                console.log(tab)
+                self.handleTabInfo(tab[0])
+            }
+        });
+    },
+    methods: {
+        OpenInCurrentTab(url) {
+            function onUpdated(tab) {
+                console.log(`Updated tab: ${tab.id}`);
+            }
+
+            function onError(error) {
+                console.log(`Error: ${error}`);
+            }
+
+            var updating = browser.tabs.update({url: url});
+            updating.then(onUpdated, onError);
+        },
+        handleTabInfo(tabInfo) {
+            this.tabInfo = tabInfo
+            console.log(tabInfo)
+            this.url = tabInfo.url;
 
             let urlObj = new URL(this.url);
             this.splittedURL.push(urlObj.origin);
@@ -83,56 +111,42 @@ export default {
 
                     console.log("Has Hash & has no pathname");
                 }
-                } else {
-                    if (urlObj.hash) {
-                        // The has will be at last
-                        let splitHash = urlObj.hash.split("#");
-                        let splitPathName = splitHash[1];
-                        console.log(splitHash, splitPathName, urlObj.pathname);
+            } else {
+                if (urlObj.hash) {
+                    // The has will be at last
+                    let splitHash = urlObj.hash.split("#");
+                    let splitPathName = splitHash[1];
+                    console.log(splitHash, splitPathName, urlObj.pathname);
 
-                        let frameURL = urlObj.origin;
+                    let frameURL = urlObj.origin;
 
-                        let splittedPathaname = urlObj.pathname.split("/").filter(function(e) {
-                            return e;
-                        });
+                    let splittedPathaname = urlObj.pathname.split("/").filter(function(e) {
+                        return e;
+                    });
 
-                        for (let i = 0; i < splittedPathaname.length; i++) {
-                            frameURL = frameURL + `/${splittedPathaname[i]}`;
-                            this.splittedURL.push(frameURL);
-                        }
-
-                        // Since it has pathname and hash
-                        frameURL = frameURL + `/${urlObj.hash}`;
+                    for (let i = 0; i < splittedPathaname.length; i++) {
+                        frameURL = frameURL + `/${splittedPathaname[i]}`;
                         this.splittedURL.push(frameURL);
-
-                        console.log("Has Hash & has to split the pathname");
-                    } else {
-                        let frameURL = urlObj.origin;
-
-                        let splittedPathaname = urlObj.pathname.split("/").filter(function(e) {
-                            return e;
-                        });
-                        for (let i = 0; i < splittedPathaname.length; i++) {
-                            frameURL = frameURL + `/${splittedPathaname[i]}`;
-                            this.splittedURL.push(frameURL);
-                        }
-                        console.log("Has no Hash has to split the pathname");
                     }
-            }
-        });
-    },
-    methods: {
-        OpenInCurrentTab(url) {
-            function onUpdated(tab) {
-                console.log(`Updated tab: ${tab.id}`);
-            }
 
-            function onError(error) {
-                console.log(`Error: ${error}`);
-            }
+                    // Since it has pathname and hash
+                    frameURL = frameURL + `/${urlObj.hash}`;
+                    this.splittedURL.push(frameURL);
 
-            var updating = browser.tabs.update({url: url});
-            updating.then(onUpdated, onError);
+                    console.log("Has Hash & has to split the pathname");
+                } else {
+                    let frameURL = urlObj.origin;
+
+                    let splittedPathaname = urlObj.pathname.split("/").filter(function(e) {
+                        return e;
+                    });
+                    for (let i = 0; i < splittedPathaname.length; i++) {
+                        frameURL = frameURL + `/${splittedPathaname[i]}`;
+                        this.splittedURL.push(frameURL);
+                    }
+                    console.log("Has no Hash has to split the pathname");
+                }
+            }
         }
     }
 };
@@ -156,6 +170,8 @@ export default {
                 img {
                     margin-top: 8px;
                     width: 32px;
+                    background-color: #868686;
+                    border-radius: 3px;
                 }
             }
 			h4 {
