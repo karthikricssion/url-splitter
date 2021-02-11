@@ -21,11 +21,11 @@
                         <label v-if="index === splittedURL.length - 1">Current URL</label>
                         <a v-bind:href="url" :title="url" target="_blank">{{ url }}</a>
                         <div class="full-width url-action-btn-wrapper">
-                            <button class="btn btn-default btn-icon-text margin-r-8" title="Copy URL">
+                            <button class="btn btn-default btn-icon-text margin-r-8" title="Copy URL" @click="copyURL(url)">
                                 <img src="../assets/icons/copy.png" alt="copy-icon" />
                                 <span>Copy</span>
                             </button>
-                            <button class="btn btn-default btn-icon-text margin-r-8" title="Go to URL">
+                            <button class="btn btn-default btn-icon-text margin-r-8" title="Go to URL" @click="openURL(url)">
                                 <img src="../assets/icons/close.png" alt="open-new-tab-icon" />
                                 <span>Open</span>
                             </button>
@@ -72,6 +72,36 @@ export default {
         });
     },
     methods: {
+        copyURL(url) {
+            let self = this
+            this.$copyText(url).then(function () {
+                self.$toasted.show("URL Copied!!", { 
+                    theme: "toasted-primary", 
+                    position: "bottom-center", 
+                    fullWidth: false,
+                    fitToScreen: true,
+                    duration : 2000
+                });
+                console.log('url copied to clipboard')
+            }, function (e) {
+                console.log('Error copying url to clipboard: ',e)
+            })
+        },
+        openURL(url){
+            function onCreated(tab) {
+              console.log(`Created new tab: ${tab.id}`)
+            }
+
+            function onError(error) {
+                console.log(`Error: ${error}`);
+            }
+
+            var creating = browser.tabs.create({
+                url: url
+            });
+            
+            creating.then(onCreated, onError);
+        },
         OpenInCurrentTab(url) {
             function onUpdated(tab) {
                 console.log(`Updated tab: ${tab.id}`);
