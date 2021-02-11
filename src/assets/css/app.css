@@ -1,0 +1,258 @@
+html, body {
+    margin: 0;
+    padding: 0;
+    font-family: Helvetica, sans-serif;
+    overflow: hidden;
+}
+
+*, ::after, ::before {
+    box-sizing: border-box;
+}
+
+/* Layout */
+.full-height {
+    height: 100%;
+    min-height: 0;
+}
+
+.full-width {
+    width: 100%;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.c-flex {
+    display: flex;
+    flex: auto;
+    min-width: 0;
+}   
+
+.c-flex-row {
+    flex-direction: row;
+}
+
+.c-flex-column {
+    flex-direction: column;
+}
+
+/* Defaults */
+.margin-0 {
+    margin: 0;
+}
+
+.margin-r-8 {
+    margin-right: 8px;
+}
+
+.font-w-normal {
+    font-weight: normal !important;
+}
+
+.font-w-600 {
+    font-weight: 600;
+}
+
+.hide {
+    display: none;
+}
+
+.btn {
+    background-color: #f0f0f0;
+    display: inline-block;
+    margin-bottom: 0;
+    font-weight: 400;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    -ms-touch-action: manipulation;
+    touch-action: manipulation;
+    cursor: pointer;
+    background-image: none;
+    border: 1px solid transparent;
+    padding: 6px 8px;
+    font-size: 12px;
+    line-height: 1.42857143;
+    border-radius: 4px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.btn img {
+    width: 16px;
+    display: inline-block;
+    vertical-align: top;
+}
+
+.btn-icon-text img {
+    margin-right: 8px;
+}
+
+.btn span {
+    vertical-align: top;
+}
+
+.btn:hover {
+    opacity: 0.8;
+}
+
+.btn-default {
+    border-color: #e6e6e6;
+}
+
+.btn-primary {
+    background-color: #0A84FF;
+    color: #fff;
+}
+
+.scroll-y {
+    overflow: hidden;
+    overflow-y: scroll;
+}
+
+.modal-mask {
+    position: fixed;
+    z-index: 9998;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: table;
+    transition: opacity 0.3s ease;
+}
+
+.modal-wrapper {
+    display: table-cell;
+    vertical-align: middle;
+}
+
+.modal-container {
+    width: 300px;
+    margin: 0px auto;
+    padding: 20px 30px;
+    background-color: #fff;
+    border-radius: 2px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);
+    transition: all 0.3s ease;
+    font-family: Helvetica, Arial, sans-serif;
+}
+
+.modal-header h3 {
+    margin-top: 0;
+    color: #42b983;
+}
+
+.modal-body {
+    margin: 20px 0;
+}
+
+/*
+ * The following styles are auto-applied to elements with
+ * transition="modal" when their visibility is toggled
+ * by Vue.js.
+ *
+ * You can easily play with the modal transition by editing
+ * these styles.
+ */
+
+.modal-enter {
+    opacity: 0;
+}
+
+.modal-leave-active {
+    opacity: 0;
+}
+
+.modal-enter .modal-container,
+.modal-leave-active .modal-container {
+    -webkit-transform: scale(1.1);
+    transform: scale(1.1);
+}
+
+.form-group {
+    margin-bottom: 16px;
+}
+  
+.form-group label {
+    display: block;
+    font-size: 12px;
+    margin-bottom: 8px;
+}
+  
+.form-group .form-input {
+    display: block;
+    width: 100%;
+    padding: 8px;
+    font-size: 14px;
+    line-height: 1.5;
+    color: #495057;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    border-radius: 0.25rem;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.form-group textarea {
+    resize: none;
+}
+  
+.form-group small {
+    display: block;
+    color: #808080;
+    margin-bottom: 4px;
+    margin-top: 4px;
+}
+  
+.form-group .error-message {
+    color: #d44950;
+}  
+
+.lds-ring {
+    display: inline-block;
+    position: relative;
+    width: 80px;
+    height: 80px;
+}
+  
+.lds-ring div {
+    box-sizing: border-box;
+    display: block;
+    position: absolute;
+    width: 64px;
+    height: 64px;
+    margin: 8px;
+    border: 8px solid #fff;
+    border-radius: 50%;
+    animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+    border-color: #fff transparent transparent transparent;
+}
+  
+.lds-ring div:nth-child(1) {
+    animation-delay: -0.45s;
+  
+}
+  
+.lds-ring div:nth-child(2) {
+    animation-delay: -0.3s;
+  
+}
+  
+.lds-ring div:nth-child(3) {
+    animation-delay: -0.15s;
+
+}
+  
+@keyframes lds-ring {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+}
+  
