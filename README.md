@@ -1,8 +1,14 @@
 ![url splitter logo](128.png)
-# url-splitter-copy
+# Smart address bar
 A simple web extension to split current tab url. user can copy to clip board or go to specific part of URL listed.
 
+[Website](https://smartaddressbar.versoly.page/)
+
+![Smart Address Bar Screenshot](./screenshot/SmartAddressBar.jpg)
+
+
 ## Project setup
+
 ```
 npm install
 ```

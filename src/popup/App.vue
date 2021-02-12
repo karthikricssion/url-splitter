@@ -1,6 +1,6 @@
 <template>
     <div class="c-flex c-flex-column full-height popup-wrapper">
-        <div class="c-flex c-flex-column content">
+        <div class="c-flex c-flex-column content" v-if="!tabInfoload">
             <div class="c-flex list-header-wrapper">
                 <div class="c-flex favicon-wrapper">
                     <div class="full-width text-center">
@@ -15,7 +15,7 @@
                 </div>
             </div>
 			<div class="c-flex full-height scroll-y list-splitted-url-wrapper">
-                <ul class="full-width">
+                <ul class="full-width" v-if="tabInfo.title !== 'New Tab'">
                     <li v-for="(url, index) in splittedURL" :key="index">
                         <label v-if="index === 0">Origin</label>
                         <label v-if="index === splittedURL.length - 1">Current URL</label>
@@ -36,6 +36,10 @@
                         </div>
                     </li>
                 </ul>
+                <div v-else class="full-width empty-tab">
+                    <img src="../assets/icons/empty.png" alt="empty-tab-icon" />
+                    <label>{{tabInfo.title}}</label>
+                </div>
             </div>
 		</div>
         <Footer></Footer>
@@ -50,6 +54,7 @@ export default {
 	},
     data() {
         return {
+            tabInfoload: true,
             tabInfo: {},
             url: "",
             splittedURL: [],
@@ -124,12 +129,12 @@ export default {
             }
         },
         handleTabInfo(tabInfo) {
+            console.log(tabInfo)
             this.tabInfo = tabInfo
             this.url = tabInfo.url;
 
             let urlObj = new URL(this.url);
             this.splittedURL.push(urlObj.origin);
-            
             if (urlObj.pathname.length === 1) {
                 if (urlObj.hash) {
                     // The has will be at last
@@ -163,6 +168,8 @@ export default {
                     console.log("Has no Hash has to split the pathname");
                 }
             }
+
+            this.tabInfoload = false
         }
     }
 };
@@ -245,6 +252,18 @@ export default {
                             }
                         }
                     }
+                }
+            }
+            .empty-tab {
+                text-align: center;
+                img {
+                    width: 48px;
+                    margin: 60px 0 0 0;
+                }
+                label {
+                    display: block;
+                    margin-bottom: 60px;
+                    font-size: 14px;
                 }
             }
         }
